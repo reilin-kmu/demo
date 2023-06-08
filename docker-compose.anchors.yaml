@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+  backend-php74: &base
+    build:
+      context: .
+      dockerfile: dockerfiles/oel7-php74.dockerfile
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/svn/${SVN_FOLDER}/html:/var/www/html
+      - /var/svn/${SVN_FOLDER}/inc:/var/www/inc
+      - /var/svn/${SVN_FOLDER}/script:/var/www/script
+      - /var/svn/${SVN_FOLDER}/conf:/var/www/conf
+    environment:
+      - SERVERNAME=wac74.kmu.edu.tw
+    container_name: wac_php74
+    command: /run.sh
+
+  backend-php82:
+    <<: *base
+    build:
+      context: .
+      dockerfile: dockerfiles/oel8-php82.dockerfile
+    ports:
+      - 8080:80
+      - 8443:443
+    environment:
+      - SERVERNAME=wac82.kmu.edu.tw
+    container_name: wac_php82
+
